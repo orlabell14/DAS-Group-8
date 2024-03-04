@@ -6,3 +6,10 @@ echo: false
 self-contained: true
 ---
 
+```{r}
+#Creating the binary variable
+data <- read.csv('DAProject9.csv')
+library(dplyr)
+data <- data %>%
+  mutate(Obese = ifelse(BMIgroup == "Obese", 1, 0))
+```
