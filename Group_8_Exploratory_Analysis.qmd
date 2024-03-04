@@ -7,9 +7,10 @@ self-contained: true
 ---
 
 ```{r}
-#Creating the binary variable
+#Creating the binary variable for obesity
 data <- read.csv('DAProject9.csv')
 library(dplyr)
 data <- data %>%
   mutate(Obese = ifelse(BMIgroup == "Obese", 1, 0))
+
 ```
