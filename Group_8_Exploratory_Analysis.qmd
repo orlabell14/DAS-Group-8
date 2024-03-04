@@ -42,3 +42,16 @@ ggplot(year_obese, aes(x = year, y = no_obese)) +
        x = "Year",
        y = "Number of Observations Obese")
 ```
+
+```{r}
+#Summary table
+summary_by_year <- data %>%
+  group_by(Year) %>%
+  summarize(Count_Obese = sum(Obese))
+
+#Histogram of year v counts
+ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
+  geom_col(fill='blue') +
+  labs(x = "Year", y = "Obese Count",
+       title = "Histogram of Obese Count by Year")
+```
