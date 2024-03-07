@@ -101,6 +101,8 @@ ggplot(data = obses_age.freq, aes(x = obses_age, y = proportion)) + geom_col()+
 
 ```
 
+@fig-scat1 displayed the proportion of obesity over each age group. 45-54 group occupied the highest proportion which was nearly 20% . 16-24 and 75+ groups shared the similar proportion which was approximately 8%.
+
 ```{r}
 #| fig-cap: Proportion of obesity by sex.
 #| label: fig-scat2
