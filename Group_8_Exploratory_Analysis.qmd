@@ -16,6 +16,8 @@ There is no one solution to cure obesity as many different socio-economic factor
 
 We shall conduct a brief exploratory analysis in @sec-EA followed by more rigorous analysis in @sec-FA and with concluding remarks in @sec-C.
 
+# Exploratory Analysis {#sec-EA}
+
 ```{r}
 #Creating the binary variable for obesity
 data <- read.csv('DAProject9.csv')
