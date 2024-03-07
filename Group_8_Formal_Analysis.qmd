@@ -48,3 +48,38 @@ summary(modelecon)
 ```
 
 The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
+
+The model equation is
+
+\$\$\$\$\\mbox{ln}({\\frac{p}-{1-p}}) = \\alpha + \\beta\\cdot age group = -1.73 + 0.44\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(25-34) + 0.88\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(35-44) + 0.95\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(45-54) + 1.16\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(55-64) + 1.12\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(65-74) + 0.81\\cdot\\mathbb{I}\_{\\mbox{Age Group}}(75+)
+
+$$
+
+where \$ \\mathbb{I}\_{\\mbox{Age Group}}\$ is an indicator function.
+
+For example the log odds increase of being obese increase by 0.44 for people in the 25-34 age group.
+
+The probabilities of being obese for each age group are
+
+```{r}
+modelage.coef.logodds <- modelage |>
+                            summary() |>
+                            coef()
+```
+
+```{r}
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"])
+
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup25-34", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup35-44", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup45-54", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup55-64", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup65-74", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup75+", "Estimate"])
+```
