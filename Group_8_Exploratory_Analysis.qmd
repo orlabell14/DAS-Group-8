@@ -17,6 +17,8 @@ data <- data %>%
 
 ```
 
+First, we create a new indicator covariate "Obese" according to the original variable "BMIgroup". As we can see, it was a categorical response variable with four different levels. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to separate obese people and other type of people.
+
 ```{r}
 #Attempting to create the time series plot
 data_2008 <- subset(data, Year == '2008' & Obese == 1)
@@ -33,6 +35,15 @@ year_obese <- cbind(year, no_obese)
   year_obese <- as.data.frame(year_obese)
 
 as.factor(year_obese$year)
+
+```
+
+```{r}
+#| fig-cap: Time Series Plot of Obese Observations Over Time.
+#| label: fig-time
+#| fig-align: center
+#| fig-width: 4.5
+#| fig-height: 3.5
 
 library(ggplot2)
 ggplot(year_obese, aes(x = year, y = no_obese)) +
@@ -58,6 +69,11 @@ ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
 ```
 
 ```{r}
+#| fig-cap: Proportion of obesity by age groups.
+#| label: fig-scat1
+#| fig-align: center
+#| fig-width: 4.5
+#| fig-height: 3.5
 #barplots of obesity on each covariate
 library(dplyr)
 # age
@@ -69,6 +85,16 @@ obses_age.freq$proportion=obses_age.freq$number/sum(obses_age.freq$number)
 ggplot(data = obses_age.freq, aes(x = obses_age, y = proportion)) + geom_col()+
   labs(x="age group",y="proportion of obesity",title="proportion of obesity by age groups")
 
+
+
+```
+
+```{r}
+#| fig-cap: Proportion of obesity by sex.
+#| label: fig-scat2
+#| fig-align: center
+#| fig-width: 4.5
+#| fig-height: 3.5
 #gender
 obses_sex.freq=table(data$Sex)
 obses_sex.freq=as.data.frame(obses_sex.freq)
@@ -77,6 +103,14 @@ obses_sex.freq$proportion=obses_sex.freq$number/sum(obses_sex.freq$number)
 
 ggplot(data = obses_sex.freq, aes(x = obses_sex, y = proportion)) + geom_col()+
   labs(x="sex",y="proportion of obesity",title="proportion of obesity by sex")
+```
+
+```{r}
+#| fig-cap: Proportion of obesity by employment status.
+#| label: fig-scat3
+#| fig-align: center
+#| fig-width: 4.5
+#| fig-height: 3.5
 
 #socio-economic status
 obses_employment.freq=table(data$Employment)
