@@ -27,7 +27,7 @@ data <- data %>%
 
 ```
 
-First, we create a new indicator covariate "Obese" according to the original variable "BMIgroup". As we can see, it was a categorical response variable with four different levels. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to separate obese people and other type of people.
+First, we created a new indicator covariate "Obese" according to the original variable "BMIgroup". As we can see, it was a categorical response variable with four different levels. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to separate obese people and other type of people.
 
 ```{r}
 #Attempting to create the time series plot
@@ -47,6 +47,8 @@ year_obese <- cbind(year, no_obese)
 as.factor(year_obese$year)
 
 ```
+
+Second, we calculated the value of obesity number by year and draw a time series plot pf obese observations from 2008 to 2012 to show whether the prevalence of obesity in Scotland changed over the years of the Scottish Health Survey. From @fig-time , we could see that the obesity prevalence increased from 2008 to 2010 then decreased from 2010 to 2012. It got peak value in 2010 and lowest value in 2012, which was 1666 and 1088 observations respectively. There was a significant increase between 2008 and 2009 and a sharp decrease between 2011 and 2012.
 
 ```{r}
 #| fig-cap: Time Series Plot of Obese Observations Over Time.
