@@ -8,6 +8,14 @@ editor_options:
   chunk_output_type: inline
 ---
 
+# Introduction
+
+Time and time again in the UK we see obesity putting more people's lives at risk and more pressure on the NHS. Not only does obesity cause majority health complications but it also puts strain on the NHS's already dwindling budget . So the question arises, is our government doing enough to combat this epidemic?
+
+There is no one solution to cure obesity as many different socio-economic factors play a role in a person's diet and lifestyle. In the following report we shall investigate the change in the prevalence of obesity in Scotland from 2008-2012. As well as determining if obesity rates are influenced by ages, gender, socio-economic status or other lifestyle factor.
+
+We shall conduct a brief exploratory analysis in @sec-EA followed by more rigorous analysis in @sec-FA and with concluding remarks in @sec-C.
+
 ```{r}
 #Creating the binary variable for obesity
 data <- read.csv('DAProject9.csv')
