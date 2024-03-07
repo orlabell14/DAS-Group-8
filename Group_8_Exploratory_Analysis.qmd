@@ -59,26 +59,33 @@ ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
 
 ```{r}
 #barplots of obesity on each covariate
-
+library(dplyr)
 # age
-ggplot(data=data,aes(x=AgeGroup,y=Obese))+
-  geom_boxplot(show.legend = FALSE)+
-  labs(x="Age group",y="Obesity",title="Obesity on different age groups")
-
 obses_age.freq=table(data$AgeGroup)
 obses_age.freq=as.data.frame(obses_age.freq)
 colnames(obses_age.freq)=c("obses_age","number")
-ggplot(data = obses_age.freq, aes(x = obses_age, y = number)) + geom_col()
+obses_age.freq$proportion=obses_age.freq$number/sum(obses_age.freq$number)
+
+ggplot(data = obses_age.freq, aes(x = obses_age, y = proportion)) + geom_col()+
+  labs(x="age group",y="proportion of obesity",title="proportion of obesity by age groups")
+
 #gender
 obses_sex.freq=table(data$Sex)
 obses_sex.freq=as.data.frame(obses_sex.freq)
 colnames(obses_sex.freq)=c("obses_sex","number")
-ggplot(data = obses_sex.freq, aes(x = obses_sex, y = number)) + geom_col()
+obses_sex.freq$proportion=obses_sex.freq$number/sum(obses_sex.freq$number)
+
+ggplot(data = obses_sex.freq, aes(x = obses_sex, y = proportion)) + geom_col()+
+  labs(x="sex",y="proportion of obesity",title="proportion of obesity by sex")
 
 #socio-economic status
 obses_employment.freq=table(data$Employment)
 obses_employment.freq=as.data.frame(obses_employment.freq)
 colnames(obses_employment.freq)=c("obses_employment","number")
-ggplot(data = obses_employment.freq, aes(x = obses_employment, y = number)) + geom_col()
+obses_employment.freq$proportion=obses_employment.freq$number/sum(obses_employment.freq$number)
+
+ggplot(data = obses_employment.freq, aes(x = obses_employment, y = proportion)) + 
+  geom_col()+
+  labs(x="employment status",y="proportion of obesity",title="proportion of obesity by employment status")
 
 ```
