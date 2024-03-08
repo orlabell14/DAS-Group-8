@@ -20,6 +20,7 @@ library(gt)
 library(MASS)
 library(patchwork)
 library(moderndive)
+library(sjPlot)
 ```
 
 ```{r}
@@ -85,7 +86,13 @@ plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
          modelage.coef.logodds["AgeGroup75+", "Estimate"])
 ```
 
-We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24.\
+We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24. We can plot the estimated probabilities by age group.
+
+```{r}
+plot_model(modelage, type = "pred", terms = "AgeGroup", axis.title = c("Age Group", "Probability of Obesity"), title = "Probability of Obesity by Age Group ")
+```
+
+\
 $$ \mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Sex}= -0.86 -0.02 \cdot \mathbb{I}_{\mbox{Sex}}(\mbox{Male})$$
 
 As before, the baseline category for the binary response is not obese and the baseline category for sex is male. Therefore the estimates from the logistic regression model above represent a change on the log-odds scale for obesity compared to the response baseline of not obese for females in comparison to males.
