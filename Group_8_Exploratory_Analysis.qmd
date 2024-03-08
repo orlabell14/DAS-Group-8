@@ -58,12 +58,13 @@ Second, we calculated the value of obesity number by year and draw a time series
 #| fig-height: 3.5
 
 library(ggplot2)
-ggplot(year_obese, aes(x = year, y = no_obese)) +
-  geom_line() +
-  geom_point() +
-  labs(title = "Time Series Plot of Obese Observations Over Time",
-       x = "Year",
-       y = "Number of Observations Obese")
+
+#time series plot with proportion of obesity
+obesity_by_time=data|>group_by(Year)|>
+  summarise(Obesity_Prevalence=mean(Obese==1)*100)
+ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
+  geom_line()+
+  labs(x="Year",y="Percentage of the density")
 ```
 
 ```{r}
