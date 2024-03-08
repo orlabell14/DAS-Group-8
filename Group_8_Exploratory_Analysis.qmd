@@ -90,13 +90,13 @@ ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
 #barplots of obesity on each covariate
 library(dplyr)
 # age
-obses_age.freq=table(data$AgeGroup)
-obses_age.freq=as.data.frame(obses_age.freq)
-colnames(obses_age.freq)=c("obses_age","number")
-obses_age.freq$proportion=obses_age.freq$number/sum(obses_age.freq$number)
+obese_age.freq=table(data$AgeGroup)
+obese_age.freq=as.data.frame(obese_age.freq)
+colnames(obese_age.freq)=c("obese_age","number")
+obese_age.freq$proportion=obese_age.freq$number/sum(obese_age.freq$number)
 
-ggplot(data = obses_age.freq, aes(x = obses_age, y = proportion)) + geom_col()+
-  labs(x="age group",y="proportion of obesity",title="proportion of obesity by age groups")
+ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)) + geom_col()+
+  labs(x="Age Group",y="Proportion of Obesity",title="Proportion of Obesity by Age Group")
 
 
 
@@ -105,36 +105,42 @@ ggplot(data = obses_age.freq, aes(x = obses_age, y = proportion)) + geom_col()+
 @fig-scat1 displayed the proportion of obesity over each age group. 45-54 group occupied the highest proportion which was nearly 20% . 16-24 and 75+ groups shared the similar proportion which was approximately 8%.
 
 ```{r}
-#| fig-cap: Proportion of obesity by sex.
+#| fig-cap: Proportion of Obesity by Sex.
 #| label: fig-scat2
 #| fig-align: center
 #| fig-width: 4.5
 #| fig-height: 3.5
 #gender
-obses_sex.freq=table(data$Sex)
-obses_sex.freq=as.data.frame(obses_sex.freq)
-colnames(obses_sex.freq)=c("obses_sex","number")
-obses_sex.freq$proportion=obses_sex.freq$number/sum(obses_sex.freq$number)
+obese_sex.freq=table(data$Sex)
+obese_sex.freq=as.data.frame(obese_sex.freq)
+colnames(obese_sex.freq)=c("Sex","number")
+obese_sex.freq$proportion=obese_sex.freq$number/sum(obese_sex.freq$number)
 
-ggplot(data = obses_sex.freq, aes(x = obses_sex, y = proportion)) + geom_col()+
-  labs(x="sex",y="proportion of obesity",title="proportion of obesity by sex")
+ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
+  labs(x="Sex",y="Proportion of Obesity",title="Proportion of Obesity by Sex")
 ```
 
 ```{r}
-#| fig-cap: Proportion of obesity by employment status.
+#| fig-cap: Proportion of Obesity by Employment status.
 #| label: fig-scat3
 #| fig-align: center
 #| fig-width: 4.5
 #| fig-height: 3.5
 
 #socio-economic status
-obses_employment.freq=table(data$Employment)
-obses_employment.freq=as.data.frame(obses_employment.freq)
-colnames(obses_employment.freq)=c("obses_employment","number")
-obses_employment.freq$proportion=obses_employment.freq$number/sum(obses_employment.freq$number)
+obese_employment.freq <- table(data$Employment)
+obese_employment.freq <- as.data.frame(obese_employment.freq)
+obese_employment.freq$Var1 <- as.character(obese_employment.freq$Var1)
+obese_employment.freq[3, 1] <- "Employed or on gov't training"
 
-ggplot(data = obses_employment.freq, aes(x = obses_employment, y = proportion)) + 
+colnames(obese_employment.freq) <- c("obese_employment","number")
+obese_employment.freq$proportion <- obese_employment.freq$number/sum(obese_employment.freq$number)
+
+
+ggplot(data = obese_employment.freq, aes(x = obese_employment, y = proportion, fill=obese_employment)) + 
   geom_col()+
-  labs(x="employment status",y="proportion of obesity",title="proportion of obesity by employment status")
+  labs(x="Employment Status",y="Proportion of Obesity",title="Proportion of Obesity by Employment Status")+
+  coord_flip()+
+    theme(legend.position = "none")
 
 ```
