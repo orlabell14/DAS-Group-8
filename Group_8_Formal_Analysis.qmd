@@ -20,6 +20,14 @@ library(gt)
 library(MASS)
 library(patchwork)
 library(moderndive)
+library(dplyr)
+library(moderndive)
+library(gapminder)
+library(sjPlot)
+library(stats)
+library(readr)
+library(janitor)
+li
 ```
 
 ```{r}
@@ -105,5 +113,9 @@ And the probability that someone is obese given they are female.
 plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"] +
          mod.sex.coef.logodds["SexMale", "Estimate"])
 ```
-
+```{r}
+data <- data |>
+                  mutate(probs.sex = fitted(modelsex))
+plot_model(modelsex, type = "pred", terms = "sex", axis.title = c("Gender", "Prob. of Observation being Obese"), title = " ")
+```
 From these two values we see that there is not much of a difference between probability that someone is obese given they are male compared to the probability that someone is obese given they are female. This coincides with the regression output about @tbl-sex as the p-value for males is not statistically significant. We are inclined to believe that gender is not an influential factor on obesity.
