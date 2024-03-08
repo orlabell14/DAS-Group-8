@@ -20,18 +20,9 @@ library(gt)
 library(MASS)
 library(patchwork)
 library(moderndive)
-<<<<<<< HEAD
+
 library(sjPlot)
-=======
-library(dplyr)
-library(moderndive)
-library(gapminder)
-library(sjPlot)
-library(stats)
-library(readr)
-library(janitor)
-li
->>>>>>> 7ae24f9f6ad85eb92c46d069448442d6c9fde3e2
+
 ```
 
 ```{r}
