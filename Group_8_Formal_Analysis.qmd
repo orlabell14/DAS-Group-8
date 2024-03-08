@@ -23,6 +23,7 @@ library(moderndive)
 ```
 
 ```{r}
+ 
 #fitting a logistic regression model for each explanatory variable 
 
 
@@ -48,3 +49,61 @@ summary(modelecon)
 ```
 
 The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
+
+The model equation is
+
+$$
+\mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Age Group}= -1.73 + 0.44 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{25-34}) + 0.88 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{35-44}) + 0.95 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{45-54}) + 1.16 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{55-64})+ 1.11 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{65-74}) + 0.81 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{75+})
+$$
+
+where $\mathbb{I}_{\mbox{Age Group}}$ is an indicator function
+
+For example the log odds increase of being obese increase by 0.44 for people in the 25-34 age group.
+
+The probabilities of being obese for each age group starting at age group 16-24 are
+
+```{r}
+modelage.coef.logodds <- modelage |>
+                            summary() |>
+                            coef()
+```
+
+```{r}
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"])
+
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup25-34", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup35-44", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup45-54", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup55-64", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup65-74", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup75+", "Estimate"])
+```
+
+We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24.\
+$$ \mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Sex}= -0.86 -0.02 \cdot \mathbb{I}_{\mbox{Sex}}(\mbox{Male})$$
+
+As before, the baseline category for the binary response is not obese and the baseline category for sex is male. Therefore the estimates from the logistic regression model above represent a change on the log-odds scale for obesity compared to the response baseline of not obese for females in comparison to males.
+
+From our regression output we can also determine the probability that someone is obese given that they are male which is determined to be the following:
+
+```{r}
+mod.sex.coef.logodds <- modelsex |>
+                            summary() |>
+                            coef()
+plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"])
+```
+
+And the probability that someone is obese given they are female.
+
+```{r}
+plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"] +
+         mod.sex.coef.logodds["SexMale", "Estimate"])
+```
+
+From these two values we see that there is not much of a difference between probability that someone is obese given they are male compared to the probability that someone is obese given they are female. This coincides with the regression output about @tbl-sex as the p-value for males is not statistically significant. We are inclined to believe that gender is not an influential factor on obesity.
