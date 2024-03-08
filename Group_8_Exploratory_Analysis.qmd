@@ -83,6 +83,8 @@ ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
        title = "Histogram of Obese Count by Year")
 ```
 
+Third, we wanted to explore the distribution of obesity prevalence in each group of different categorical variables. So we made barplot for each categorical variable, which were age, sex and socio-economic status.
+
 ```{r}
 #| fig-cap: Proportion of obesity by age groups.
 #| label: fig-scat1
@@ -122,6 +124,8 @@ ggplot(data = obses_sex.freq, aes(x = obses_sex, y = proportion)) + geom_col()+
   labs(x="sex",y="proportion of obesity",title="proportion of obesity by sex")
 ```
 
+@fig-scat2 displayed the proportion of obesity over sex. Female occupied higher proportion of obesity which was nearly 55% . Male occupied lower proportion of obesity which was nearly 45%.
+
 ```{r}
 #| fig-cap: Proportion of obesity by employment status.
 #| label: fig-scat3
@@ -140,3 +144,5 @@ ggplot(data = obses_employment.freq, aes(x = obses_employment, y = proportion)) 
   labs(x="employment status",y="proportion of obesity",title="proportion of obesity by employment status")
 
 ```
+
+@fig-scat3 displayed the proportion of obesity over each socio-economic status. "In paid employment, self-employed or on gov't training" group occupied the highest proportion which was nearly 55.55% . "Doing something else" occupied the lowest proportion which was approximately 1%.
