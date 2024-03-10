@@ -49,7 +49,6 @@ summary(modelecon)
 
 ```{r}
 qchisq(df=6, p=0.95)
-qchisq(df=25217, p=0.95)
 
 ```
 
