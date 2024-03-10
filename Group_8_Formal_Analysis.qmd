@@ -48,10 +48,12 @@ summary(modelecon)
 ```
 
 ```{r}
+qchisq(df=6, p=0.95)
 qchisq(df=25217, p=0.95)
+
 ```
 
-The residual deviance is 30372 on 25217 degrees of freedom which is greater than the value of a chi-squared distribution on 25217 degrees of freedom (25588). There is potentially a lack of fit of the model of age.
+The difference in the null and residual deviance is 499 and this is much larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including age in the model.
 
 The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
 
