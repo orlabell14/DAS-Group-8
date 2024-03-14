@@ -4,6 +4,8 @@ format: html
 editor: visual
 echo: false
 self-contained: true
+toc: true
+number-sections: true
 editor_options: 
   chunk_output_type: inline
 ---
@@ -49,7 +51,9 @@ data <- data %>%
   mutate(Obese = ifelse(BMIgroup == "Obese", 1, 0))
 
 ```
+
 First, we created a new indicator covariate "Obese" according to the original variable "BMIgroup". As we can see, it was a categorical response variable with four different levels. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to separate obese people and other type of people.
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -89,7 +93,9 @@ ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
   geom_line()+
   labs(x="Year",y="Percentage of the density")
 ```
+
 From @fig-time , we could see that the obesity prevalence proportion first decreased from 2008 to 2009 and got the lowest value 28.78%. Then it increased dramatically and reached its peak value, 30.47% , in 2010. After 2010, it kept decreasing and it got 29.61% in 2012.
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -147,6 +153,7 @@ obese_sex.freq$proportion=obese_sex.freq$number/sum(obese_sex.freq$number)
 ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
   labs(x="Sex",y="Proportion of Obesity",title="Proportion of Obesity by Sex")
 ```
+
 @fig-scat2 displays the proportion of obesity by sex. Females occupied a higher proportion of obesity which was nearly 55% . Whereas males occupied a lower proportion of obesity which was nearly 45%.
 
 ```{r}
@@ -175,14 +182,17 @@ ggplot(data = obese_employment.freq, aes(x = obese_employment, y = proportion, f
     theme(legend.position = "none")
 
 ```
+
 @fig-scat3 displays the proportion of obesity over each socio-economic status. The most obese socio-economic group was "In paid employment, self-employed or on gov't training" which was occupied by the highest proportion of obese observations, which was nearly 55.55% . Whereas "Doing something else" had the lowest proportion of obese observations which was approximately 1%.
 
 # Formal Analyis {#sec-FA}
+
 After conducting some exploratory analysis to help us visualise the data in @sec-EA, we now conduct some more rigorous analysis by fitting a series of logistic regression models.
 
-We first fit a model that took into account all predictor variables and interaction terms. After following a process of backwards elimination we determined that the interaction terms were not significant and by following the Principle of Occam's Razor, we proceeded to fit the most simple model. 
+We first fit a model that took into account all predictor variables and interaction terms. After following a process of backwards elimination we determined that the interaction terms were not significant and by following the Principle of Occam's Razor, we proceeded to fit the most simple model.
 
-## Obese by Sex
+## Obesity by Sex
+
 ```{r}
 #| echo: false
 #| label: tbl-sex
@@ -204,7 +214,7 @@ The baseline category for the binary response is not obese and the baseline cate
 From our regression output we can also determine the probability that someone is obese given that they are male which is determined to be the following:
 
 ```{r}
-#| echo: false
+
 mod.sex.coef.logodds <- modelsex |>
                             summary() |>
                             coef()
@@ -233,11 +243,27 @@ From these two values we see that there is not much of a difference between prob
 We also see that the difference in the null and residual deviance for the sex model is 1 and and this is smaller than the 95th percentile of a chi-squared distribution on 1 degree of freedom which is 3.84. Therefore it is not worth including sex in the model.
 
 ## Obesity by Age
+
 ```{r}
+#| echo: false
+
 modelage <- glm(Obese ~ AgeGroup,
                 data = data, family = binomial)
 summary(modelage)
 ```
+
+| Estimate | p-value  |
+|----------|----------|
+| -1.73631 | \<2e-16  |
+| 0.44453  | 2.68e-09 |
+| 0.88317  | \<2e-16  |
+| 0.95485  | \<2e-16  |
+| 1.16308  | \<2e-16  |
+| 1.11899  | \<2e-16  |
+| 0.81453  | \<2e-16  |
+
+: Estimate of Regression Coefficients and P-values
+
 The difference in the null and residual deviance for the age model is 499 and this is much larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including age in the model.
 
 The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
@@ -248,18 +274,20 @@ $$
 \mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Age Group}= -1.73 + 0.44 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{25-34}) + 0.88 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{35-44}) + 0.95 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{45-54}) + 1.16 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{55-64})+ 1.11 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{65-74}) + 0.81 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{75+})
 $$
 
-where $\mathbb{I}_{\mbox{Age Group}}$ is an indicator function
-For example the log odds increase of being obese increase by 0.44 for people in the 25-34 age group.
+where $\mathbb{I}_{\mbox{Age Group}}$ is an indicator function For example the log odds increase of being obese increase by 0.44 for people in the 25-34 age group.
 
 The probabilities of being obese for each age group starting at age group 16-24 are
 
 ```{r}
+#| echo: false
 modelage.coef.logodds <- modelage |>
                             summary() |>
                             coef()
 ```
 
 ```{r}
+#| echo: false
+#| eval: false
 plogis(modelage.coef.logodds["(Intercept)", "Estimate"])
 
 plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
@@ -276,19 +304,39 @@ plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
          modelage.coef.logodds["AgeGroup75+", "Estimate"])
 ```
 
+```{r}
+
+```
+
+| Age Group | Probability |
+|-----------|-------------|
+| 16-24     | 0.1498      |
+| 25-34     | 0.2156      |
+| 35-44     | 0.2989      |
+| 45-54     | 0.3140      |
+| 55-64     | 0.3605      |
+| 64-75     | 0.3504      |
+| 75+       | 0.2846      |
+
+: Probability of Obesity by Age Group
+
 We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24. We can plot the estimated probabilities by age group.
+
 ```{r}
 
 plot_model(modelage, type = "pred", terms = "AgeGroup", axis.title = c("Age Group", "Probability of Obesity"), title = "Probability of Obesity by Age Group ")
 ```
+
 We can see that there is quite a lot of difference between the estimated probabilities of being obese in each group.
 
-## Obesity by Employemnt  Status
+## Obesity by Employemnt Status
+
 ```{r}
 modelecon <- glm(Obese ~ Employment,
                  data = data, family = binomial)
 summary(modelecon)
 ```
+
 The difference in the null and residual deviance for the socio-economic status model is 277 and and this is larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including socio-economic status in the model.
 
 For socio-economic status we have the following model,
@@ -303,6 +351,7 @@ where $\mathbb{I}_{\mbox{Edu}}(x)$, $\mathbb{I}_{\mbox{Emp}}(x)$, $\mathbb{I}_{\
 We again have that the baseline category for the binary response is 'not obese' and the baseline for employment status is 'Doing Something Else'. This means we can interpret the estimates from the logistic regression as the change in the log-odds scale for 'obese' compared to the baseline 'not obese' and for all other employment status in comparison to 'Doing Something Else'.
 
 The probability of being obese for each socio-economic status are
+
 ```{r}
 modelecon.coef.logodds <- modelecon |>
                             summary() |>
