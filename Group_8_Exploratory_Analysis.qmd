@@ -8,6 +8,22 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false 
+library(ggplot2)
+library(dplyr)
+library(moderndive)
+library(skimr)
+library(kableExtra)
+library(gridExtra)
+library(MASS)
+library(readr)
+library(tidyr)
+library(gt)
+```
+
 # Introduction
 
 Time and time again in the UK we see obesity putting more people's lives at risk and more pressure on the NHS. Not only does obesity cause majority health complications but it also puts strain on the NHS's already dwindling budget . So the question arises, is our government doing enough to combat this epidemic?
@@ -19,6 +35,9 @@ We shall conduct a brief exploratory analysis in @sec-EA followed by more rigoro
 # Exploratory Analysis {#sec-EA}
 
 ```{r}
+#| echo: false
+#| warning: false
+#| error: false
 #Creating the binary variable for obesity
 data <- read.csv('DAProject9.csv')
 library(dplyr)
@@ -27,9 +46,12 @@ data <- data %>%
 
 ```
 
-First, we created a new indicator covariate "Obese" according to the original variable "BMIgroup". As we can see, it was a categorical response variable with four different levels. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to separate obese people and other type of people.
+First, we created a new indicator covariate "Obese" according to the original variable "BMIgroup", because it was a categorical response variable with four different levels as we can see. Our aim was to explore the impact of different factors on obesity, so we use 1 and 0 to denote obese people and other type of people respectively.
+
+Second, we calculated the value of obesity number by year and found each year the population sizes were different. In order to avoid the influence of population size, we calculated the proportion of prevalence of obesity over year and drew a time series plot of obese observations from 2008 to 2012 to show whether the proportion of prevalence of obesity in Scotland changed over the years.
 
 ```{r}
+
 #Attempting to create the time series plot
 data_2008 <- subset(data, Year == '2008' & Obese == 1)
 data_2009 <- subset(data, Year == '2009'& Obese == 1)
@@ -48,11 +70,10 @@ as.factor(year_obese$year)
 
 ```
 
-Second, we calculated the value of obesity number by year and found each year the number of subjects were different. So we calculated the proportion of prevalence of obesity over year and drew a time series plot pf obese observations from 2008 to 2012 to show whether the proportion of prevalence of obesity in Scotland changed over the years of the Scottish Health Survey.
-
 From @fig-time , we could see that the obesity prevalence proportion first decreased from 2008 to 2009 and got the lowest value 28.78%. Then it increased dramatically and reached its peak value, 30.47% , in 2010. After 2010, it kept decreasing and it got 29.61% in 2012.
 
 ```{r}
+
 #| fig-cap: Time Series Plot of Obese Observations Over Time.
 #| label: fig-time
 #| fig-align: center
@@ -74,13 +95,7 @@ ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
 summary_by_year <- data %>%
   group_by(Year) %>%
   summarize(Count_Obese = sum(Obese))
-summary_by_year
-
-#Histogram of year v counts
-ggplot(data = summary_by_year, aes(x = Year, y = Count_Obese)) +
-  geom_col(fill='blue') +
-  labs(x = "Year", y = "Obese Count",
-       title = "Histogram of Obese Count by Year")
+gt(summary_by_year)
 ```
 
 Third, we wanted to explore the distribution of obesity prevalence in each group of different categorical variables. So we made barplot for each categorical variable, which were age, sex and socio-economic status.
