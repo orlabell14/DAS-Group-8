@@ -1,0 +1,170 @@
+---
+title: "Group_8_Formal_Analysis"
+echo: false
+format: html
+editor: visual
+self-contained: true
+---
+
+```{r}
+
+
+data <- read.csv("DAProject9.csv")
+library(dplyr)
+data <- data %>%
+  mutate(Obese = ifelse(BMIgroup == "Obese", 1, 0))
+library(ggplot2)
+library(tidyverse)
+library(tidymodels)
+library(gt)
+library(MASS)
+library(patchwork)
+library(moderndive)
+
+library(sjPlot)
+
+```
+
+```{r}
+ 
+#fitting a logistic regression model for each explanatory variable 
+
+
+#age
+modelage <- glm(Obese ~ AgeGroup,
+                data = data, family = binomial)
+summary(modelage)
+
+#sex
+modelsex <- glm(Obese ~ Sex,
+                data = data, family = binomial)
+summary(modelsex)
+
+#socio-economic status
+modelecon <- glm(Obese ~ Employment,
+                 data = data, family = binomial)
+summary(modelecon)
+
+```
+
+The difference in the null and residual deviance for the age model is 499 and this is much larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including age in the model.
+
+The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
+
+The model equation is
+
+$$
+\mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Age Group}= -1.73 + 0.44 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{25-34}) + 0.88 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{35-44}) + 0.95 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{45-54}) + 1.16 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{55-64})+ 1.11 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{65-74}) + 0.81 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{75+})
+$$
+
+where $\mathbb{I}_{\mbox{Age Group}}$ is an indicator function
+
+For example the log odds increase of being obese increase by 0.44 for people in the 25-34 age group.
+
+The probabilities of being obese for each age group starting at age group 16-24 are
+
+```{r}
+modelage.coef.logodds <- modelage |>
+                            summary() |>
+                            coef()
+```
+
+```{r}
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"])
+
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup25-34", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup35-44", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup45-54", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup55-64", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup65-74", "Estimate"])
+plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
+         modelage.coef.logodds["AgeGroup75+", "Estimate"])
+```
+
+We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24. We can plot the estimated probabilities by age group.
+
+```{r}
+plot_model(modelage, type = "pred", terms = "AgeGroup", axis.title = c("Age Group", "Probability of Obesity"), title = "Probability of Obesity by Age Group ")
+```
+
+We can see that there is quite a lot of difference between the estimated probabilities of being obese in each group.
+
+The difference in the null and residual deviance for the sex model is 1 and and this is smaller than the 95th percentile of a chi-squared distribution on 1 degree of freedom which is 3.84. Therefore it is not worth including sex in the model.\
+$$ \mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Sex}= -0.86 -0.02 \cdot \mathbb{I}_{\mbox{Sex}}(\mbox{Male})$$
+
+As before, the baseline category for the binary response is not obese and the baseline category for sex is male. Therefore the estimates from the logistic regression model above represent a change on the log-odds scale for obesity compared to the response baseline of not obese for females in comparison to males.
+
+From our regression output we can also determine the probability that someone is obese given that they are male which is determined to be the following:
+
+```{r}
+mod.sex.coef.logodds <- modelsex |>
+                            summary() |>
+                            coef()
+plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"])
+```
+
+And the probability that someone is obese given they are female.
+
+```{r}
+plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"] +
+         mod.sex.coef.logodds["SexMale", "Estimate"])
+```
+
+```{r}
+data <- data |>
+                  mutate(probs.sex = fitted(modelsex))
+plot_model(modelsex, type = "pred", terms = "Sex", axis.title = c("Gender", "Prob. of Observation being Obese"), title = " ")
+```
+
+From these two values we see that there is not much of a difference between probability that someone is obese given they are male compared to the probability that someone is obese given they are female. This coincides with the regression output about @tbl-sex as the p-value for males is not statistically significant. We are inclined to believe that gender is not an influential factor on obesity.
+
+The difference in the null and residual deviance for the socio-economic status model is 277 and and this is larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including socio-economic status in the model.
+
+For socio-economic status we have the following model,
+
+$$
+ln(\frac {p} {1-p}) = \alpha + -1.16 \cdot \mathbb{I}_{\mbox{Edu}}(x) + -0.03 \cdot \mathbb{I}_{\mbox{Emp}}(x) + -0.06 \cdot 
+\mathbb{I}_{\mbox{Home}}(x) + -0.12 \cdot \mathbb{I}_{\mbox{LFW}}(x) + 0.42 \cdot \mathbb{I}_{\mbox{Unable}}(x) + 0.17 \cdot \mathbb{I}_{\mbox{Retired}}(x)
+$$
+
+where $\mathbb{I}_{\mbox{Edu}}(x)$, $\mathbb{I}_{\mbox{Emp}}(x)$, $\mathbb{I}_{\mbox{Home}}(x)$, $\mathbb{I}_{\mbox{LFW}}(x)$, $\mathbb{I}_{\mbox{Unable}}(x)$, $\mathbb{I}_{\mbox{Retired}}(x)$ are indicator functions such that: 'Edu' represents subjects in full-time education, 'Emp' represents paid employment, self-employment or government training, 'Home' represents looking after home or family, 'LFW' represents looking for work, 'Unable' represents unable to work and 'Retired' represents subjects that are retired.
+
+We again have that the baseline category for the binary response is 'not obese' and the baseline for employment status is 'Doing Something Else'. This means we can interpret the estimates from the logistic regression as the change in the log-odds scale for 'obese' compared to the baseline 'not obese' and for all other employment status in comparison to 'Doing Something Else'.
+
+The probability of being obese for each socio-economic status are
+
+```{r}
+modelecon.coef.logodds <- modelecon |>
+                            summary() |>
+                            coef()
+```
+
+```{r}
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"])
+
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentIn full-time education", "Estimate"])
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentIn paid employment, self-employed or on gov't training", "Estimate"])
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentLooking after home/family", "Estimate"])
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentLooking for/intending to look for paid work", "Estimate"])
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentPerm unable to work", "Estimate"])
+plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
+         modelecon.coef.logodds["EmploymentRetired", "Estimate"])
+```
+
+Here we see that the probability of being obese is highest for subjects that are permanently unable to work, it is lowest for subjects in full-time education.
+
+```{r}
+plot_model(modelecon, type = "pred", terms = "Employment", axis.title = c("Socio-economic Status", "Probability of Obesity"), title = "Probability of Obesity by Socio-economic Status")
+```
+
+From the plot we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
