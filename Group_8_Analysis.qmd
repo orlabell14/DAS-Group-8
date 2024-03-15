@@ -79,7 +79,7 @@ Second, we calculated the value of obesity number by year and found each year th
 ```{r}
 #| echo: false
 #| warning: false
-#| fig-cap: Time Series Plot of Obese Observations Over Time(left) and Proportion of obesity by age groups(right).
+#| fig-cap: Time Series Plot of Obese Observations Over Time.
 #| label: fig-time
 #| fig-align: center
 #| fig-width: 4.5
@@ -90,21 +90,11 @@ library(ggplot2)
 #time series plot with proportion of obesity
 obesity_by_time=data|>group_by(Year)|>
   summarise(Obesity_Prevalence=mean(Obese==1)*100)
-p1=ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
+ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
   geom_line()+
   labs(x="Year",y="Percentage of the density")
 
-#barplots of obesity on each covariate
-library(dplyr)
-# age
-obese_age.freq=table(data$AgeGroup)
-obese_age.freq=as.data.frame(obese_age.freq)
-colnames(obese_age.freq)=c("obese_age","number")
-obese_age.freq$proportion=obese_age.freq$number/sum(obese_age.freq$number)
 
-p2=ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)) + geom_col()+
-  labs(x="Age Group",y="Proportion of Obesity",title="Proportion of Obesity by Age Group")
-grid.arrange(p1,p2,ncol=2)
 ```
 
 From @fig-time , we could see that the obesity prevalence proportion first decreased from 2008 to 2009 and got the lowest value 28.78%. Then it increased dramatically and reached its peak value, 30.47% , in 2010. After 2010, it kept decreasing and it got 29.61% in 2012.
@@ -152,8 +142,8 @@ ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)
 ```{r}
 #| echo: false
 #| warning: false
-#| fig-cap: Proportion of Obesity by Sex(left) and Proportion of Obesity by Employment status(right).
-#| label: fig-scat1
+#| fig-cap: Proportion of Obesity by Sex.
+#| label: fig-scat2
 #| fig-align: center
 #| fig-width: 4.5
 #| fig-height: 3.5
@@ -164,28 +154,10 @@ obese_sex.freq=as.data.frame(obese_sex.freq)
 colnames(obese_sex.freq)=c("Sex","number")
 obese_sex.freq$proportion=obese_sex.freq$number/sum(obese_sex.freq$number)
 
-p3=ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
+ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
   labs(x="Sex",y="Proportion of Obesity",title="Proportion of Obesity by Sex")
 
-#socio-economic status
-obese_employment.freq <- table(data$Employment)
-obese_employment.freq <- as.data.frame(obese_employment.freq)
-obese_employment.freq$Var1 <- as.character(obese_employment.freq$Var1)
-obese_employment.freq[3, 1] <- "Employed or on gov't training"
 
-colnames(obese_employment.freq) <- c("obese_employment","number")
-obese_employment.freq$proportion <- obese_employment.freq$number/sum(obese_employment.freq$number)
-
-
-p4=ggplot(data = obese_employment.freq, aes(x = obese_employment, y = proportion, fill=obese_employment)) + 
-  geom_col()+
-  labs(x="Employment Status",y="Proportion of Obesity",title="Proportion of Obesity by Employment Status")+
-  coord_flip()+
-    theme(legend.position = "none")
-
-
-
-grid.arrange(p3,p4,ncol=2)
 ```
 
 @fig-scat2 displays the proportion of obesity by sex. Females occupied a higher proportion of obesity which was nearly 55% . Whereas males occupied a lower proportion of obesity which was nearly 45%.
