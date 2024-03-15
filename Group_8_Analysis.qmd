@@ -195,7 +195,6 @@ We first fit a model that took into account all predictor variables and interact
 ## Obesity by Sex
 
 ```{r}
-
 #| echo: false
 #| label: tbl-sex
 #| tbl-cap: Estimates of the regression model coefficients.
@@ -328,16 +327,19 @@ plogis(modelage.coef.logodds["(Intercept)", "Estimate"] +
 | 64-75     | 0.3504      |
 | 75+       | 0.2846      |
 
-: Probability of Obesity by Age Group
+: Probability of Obesity by Age Group {#tbl-ageprob}
 
-We can see the probability of being obese is highest for the 55-64 age group and lowest for the 16-24. We can plot the estimated probabilities by age group.
+We can see from @tbl-ageprob the probability of being obese is highest for the 55-64 age group and lowest for the 16-24. We can plot the estimated probabilities by age group.
 
 ```{r}
+#| echo: false
+#| label: fig-ageci
+#| fig-cap: Confidence Interval Plot for Age Group
 
 plot_model(modelage, type = "pred", terms = "AgeGroup", axis.title = c("Age Group", "Probability of Obesity"), title = "Probability of Obesity by Age Group ")
 ```
 
-We can see that there is quite a lot of difference between the estimated probabilities of being obese in each group.
+We can see from @fig-ageci that there is quite a lot of difference between the estimated probabilities of being obese in each group.
 
 ## Obesity by Employment Status
 
@@ -347,12 +349,24 @@ modelecon <- glm(Obese ~ Employment,
 
 ```
 
+| term                                                | estimate | p-value         |
+|------------------------|------------------------|------------------------|
+| Intercept                                           | -0.86824 | 5.45e-11 \*\*\* |
+| In full time education                              | -1.16236 | 1.68e-12 \*\*\* |
+| In paid employment, self employed or gov't training | -0.03470 | 0.79521         |
+| Looking after home/family                           | -0.06153 | 0.66875         |
+| Looking for/ intending to look for paid work        | -0.12037 | 0.43834         |
+| Perm unable to work                                 | 0.41501  | 0.00444 \*\*    |
+| Retired                                             | 0.16511  | 0.22132         |
+
+: Regression Output for Obesity by Employment Status {#tbl-employ}
+
 The difference in the null and residual deviance for the socio-economic status model is 277 and and this is larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including socio-economic status in the model.
 
-For socio-economic status we have the following model,
+For socio-economic status, from @tbl-employ, we have the following model,
 
 $$
-ln(\frac {p} {1-p}) = \alpha + -1.16 \cdot \mathbb{I}_{\mbox{Edu}}(x) + -0.03 \cdot \mathbb{I}_{\mbox{Emp}}(x) + -0.06 \cdot 
+\mbox{ln}({\frac{p}{1-p}}) = \alpha + -1.16 \cdot \mathbb{I}_{\mbox{Edu}}(x) + -0.03 \cdot \mathbb{I}_{\mbox{Emp}}(x) + -0.06 \cdot 
 \mathbb{I}_{\mbox{Home}}(x) + -0.12 \cdot \mathbb{I}_{\mbox{LFW}}(x) + 0.42 \cdot \mathbb{I}_{\mbox{Unable}}(x) + 0.17 \cdot \mathbb{I}_{\mbox{Retired}}(x)
 $$
 
@@ -369,6 +383,7 @@ modelecon.coef.logodds <- modelecon |>
 ```
 
 ```{r}
+#| eval: false
 plogis(modelecon.coef.logodds["(Intercept)", "Estimate"])
 
 plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
@@ -385,13 +400,28 @@ plogis(modelecon.coef.logodds["(Intercept)", "Estimate"] +
          modelecon.coef.logodds["EmploymentRetired", "Estimate"])
 ```
 
-Here we see that the probability of being obese is highest for subjects that are permanently unable to work, it is lowest for subjects in full-time education.
+| Employment Status                                   | Probability |
+|-----------------------------------------------------|-------------|
+| Doing something else                                | 0.2956204   |
+| In full time education                              | 0.1160275   |
+| In paid employment, self employed or gov't training | 0.2884464   |
+| Looking after home/family                           | 0.2829706   |
+| Looking for/ intending to look for paid work        | 0.2711864   |
+| Perm unable to work                                 | 0.3885918   |
+| Retired                                             | 0.3311176   |
+
+: Probability of Obesity Given Employment Status {#tbl-employprob}
+
+@tbl-employprob shows that the probability of being obese is highest for subjects that are permanently unable to work, it is lowest for subjects in full-time education.
 
 ```{r}
+#| echo: false
+#| label: fig-socioeco
+#| fig-cap: Confidence Interval Plot for Socio-Economic Status
 plot_model(modelecon, type = "pred", terms = "Employment", axis.title = c("Socio-economic Status", "Probability of Obesity"), title = "Probability of Obesity by Socio-economic Status")
 ```
 
-From the plot we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
+From @fig-socioeco we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
 
 # Conclusions {#sec-C}
 
