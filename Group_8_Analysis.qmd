@@ -245,7 +245,7 @@ probf <- plogis(mod.sex.coef.logodds["(Intercept)", "Estimate"] +
 ```{r}
 #| echo: false
 #| label: fig-sex
-#| tbl-cap: Confidence Interval Plot for Sex
+#| fig-cap: Confidence Interval Plot for Sex
 data <- data |>
                   mutate(probs.sex = fitted(modelsex))
 plot_model(modelsex, type = "pred", terms = "Sex", axis.title = c("Gender", "Prob. of Observation being Obese"), title = " ")
@@ -266,11 +266,23 @@ modelage <- glm(Obese ~ AgeGroup,
 
 ```
 
+| term      | estimate | p-value         |
+|-----------|----------|-----------------|
+| Intercept | -1.73631 | \<2e-16 \*\*\*  |
+| 25-34     | 0.44453  | 2.68e-09 \*\*\* |
+| 35-44     | 0.88317  | \<2e-16 \*\*\*  |
+| 45-54     | 0.95485  | \<2e-16 \*\*\*  |
+| 55-64     | 1.16308  | \<2e-16 \*\*\*  |
+| 65-74     | 1.11899  | \<2e-16 \*\*\*  |
+| 75+       | 0.81453  | \<2e-16 \*\*\*  |
+
+: Regression output of obesity by age group {#tbl-agereg}
+
 The difference in the null and residual deviance for the age model is 499 and this is much larger than the 95th percentile of a chi-squared distribution on 6 degrees of freedom which is 12.59. Therefore it is worth including age in the model.
 
 The baseline category for the binary response is not obese and the baseline category for age is 16-24. This means that estimates from the logistic regression model are for a change on the log-odds scale for being obese in comparison to the response baseline of not obese and for all other age groups in comparison to age group 16-24.
 
-The model equation is
+The model equation from @tbl-agereg is
 
 $$
 \mbox{ln}({\frac{p}{1-p}}) = \alpha + \beta \cdot\mbox{Age Group}= -1.73 + 0.44 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{25-34}) + 0.88 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{35-44}) + 0.95 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{45-54}) + 1.16 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{55-64})+ 1.11 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{65-74}) + 0.81 \cdot \mathbb{I}_{\mbox{Age Group}}(\mbox{75+})
@@ -327,7 +339,7 @@ plot_model(modelage, type = "pred", terms = "AgeGroup", axis.title = c("Age Grou
 
 We can see that there is quite a lot of difference between the estimated probabilities of being obese in each group.
 
-## Obesity by Employemnt Status
+## Obesity by Employment Status
 
 ```{r}
 modelecon <- glm(Obese ~ Employment,
