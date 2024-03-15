@@ -143,7 +143,7 @@ ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)
 #| echo: false
 #| warning: false
 #| fig-cap: Proportion of Obesity by Sex.
-#| label: fig-scat1
+#| label: fig-scat2
 #| fig-align: center
 #| fig-width: 4.5
 #| fig-height: 3.5
