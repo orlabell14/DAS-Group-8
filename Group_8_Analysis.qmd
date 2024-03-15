@@ -392,3 +392,9 @@ plot_model(modelecon, type = "pred", terms = "Employment", axis.title = c("Socio
 ```
 
 From the plot we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
+
+# Conclusions
+
+While our analysis provides insight into the effect of age and socio-economic status on obesity, several limitations are observed. The sample size may be considered unbalanced as the population sizes of each level in the categorical variable are not similar.
+
+Furthermore, there maybe confounding variables which were not accounted for, such as additional socioeconomic factors, which may impact the results.On analysis highlights the importance of age and socio-economic status as they have clear impact on the obesity prevalence , therefore more attention should be paid to 55-64 age group and "unable to work" group. Future studies should consider following the experimental population over a longer time period to see if there will be changes in the status of obesity.Finally, they should also consider utilizing a more balanced sample and control for additional confounding variables.
