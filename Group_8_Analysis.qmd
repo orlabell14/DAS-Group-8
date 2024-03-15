@@ -383,7 +383,7 @@ modelecon <- glm(Obese ~ Employment,
 ```
 
 | term                                                | estimate | p-value         |
-|------------------------|------------------------|------------------------|
+|-----------------------------------------------------|----------|-----------------|
 | Intercept                                           | -0.86824 | 5.45e-11 \*\*\* |
 | In full time education                              | -1.16236 | 1.68e-12 \*\*\* |
 | In paid employment, self employed or gov't training | -0.03470 | 0.79521         |
