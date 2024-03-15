@@ -173,3 +173,11 @@ plot_model(modelecon, type = "pred", terms = "Employment", axis.title = c("Socio
 ```
 
 From the plot we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
+
+#Conclusion {sec-con}
+
+From our model considering the sex variable we see that sex is not a statistically significant predictor of obesity prevalence. On the other hand, we found that age was statistically significant and was worth including in the model. The estimated probabilities by age group suggest that middle-aged people are more likely to be obese than both younger and older people, which is consistent with what initially appeared to be the case in our exploratory analysis.
+
+Furthermore, we also found socio-economic status to be a statistically significant predictor of obesity with people in full-time education least likely to be obese and people that are permanently unable to work most likely to.
+
+Thus we conclude that there are differences in obesity prevalence by age and socio-economic status, but not by gender.
