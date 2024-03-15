@@ -97,7 +97,7 @@ ggplot(obesity_by_time,aes(x=Year,y=Obesity_Prevalence))+
 
 ```
 
-From @fig-time , we could see that the obesity prevalence proportion first decreased from 2008 to 2009 and got the lowest value 28.78%. Then it increased dramatically and reached its peak value, 30.47% , in 2010. After 2010, it kept decreasing and it got 29.61% in 2012.
+From @fig-time , we could see that the obesity prevalence proportion first decreased from 2008 to 2009 and got the lowest value 28.78%. Then it increased dramatically and reached its peak value, 30.47% , in 2010. After 2010, it continued to decrease to 29.61% in 2012.
 
 ```{r}
 #| echo: false
@@ -355,7 +355,7 @@ modelecon <- glm(Obese ~ Employment,
 ```
 
 | term                                                | estimate | p-value         |
-|-----------------------------------------------------|----------|-----------------|
+|-------------------------------------------|---------------|---------------|
 | Intercept                                           | -0.86824 | 5.45e-11 \*\*\* |
 | In full time education                              | -1.16236 | 1.68e-12 \*\*\* |
 | In paid employment, self employed or gov't training | -0.03470 | 0.79521         |
@@ -430,6 +430,16 @@ From @fig-socioeco we can see there appears to be a significant difference in th
 
 # Conclusions {#sec-C}
 
-While our exploratory analysis in @sec-EA and formal analysis in @sec-FA provides insight into the effect of age and socio-economic status on obesity, several limitations are observed. The sample size may be considered unbalanced as the population sizes of each level in the categorical variable are not similar.
+In our exploratory analysis in @sec-EA we investigated trends in obesity over the time period of 2008-2012. We saw that obesity initially decreased but then sharply increased in 2010 before decreasing again over the following years.
+
+From the formal analysis in @sec-FA we see in our model considering the sex variable that sex is not a statistically significant predictor of obesity prevalence. Although the estimated probability of obesity appears to be slightly higher for females which is also what was found in exploratory analysis.
+
+On the other hand, we found that age was statistically significant and was worth including in the model. The estimated probabilities by age group suggest that middle-aged people are more likely to be obese than both younger and older people, which is consistent with what initially appeared to be the case in our exploratory analysis.
+
+Furthermore, we also found socio-economic status to be a statistically significant predictor of obesity with people in full-time education least likely to be obese and people that are permanently unable to work most likely to. These results are similar to the conclusions drawn in exploratory analysis however we initially found individuals in paid employment most likely and people 'doing something else' least likely to be obese.
+
+Thus we conclude that there are differences in obesity prevalence by age and socio-economic status, but not by gender.
+
+While our analysis provides insight into the effect of age and socio-economic status on obesity, several limitations are observed. The sample size may be considered unbalanced as the population sizes of each level in the categorical variable are not similar.
 
 Furthermore, there maybe confounding variables which were not accounted for, such as additional socioeconomic factors, which may impact the results. Our analysis highlights the importance of age and socio-economic status as they have clear impact on the obesity prevalence , therefore more attention should be paid to 55-64 age group and "unable to work" group. Future studies should consider following the experimental population over a longer time period to see if there will be changes in the status of obesity.Finally, they should also consider utilizing a more balanced sample and control for additional confounding variables.
