@@ -140,19 +140,32 @@ ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)
 ```{r}
 #| echo: false
 #| warning: false
-#| fig-cap: Proportion of Obesity by Sex.
-#| label: fig-scat2
+#| fig-cap: Proportion of obesity by age groups(left) and Proportion of Obesity by Sex(right).
+#| label: fig-scat1
 #| fig-align: center
 #| fig-width: 4.5
 #| fig-height: 3.5
+
+
+#barplots of obesity on each covariate
+library(dplyr)
+# age
+obese_age.freq=table(data$AgeGroup)
+obese_age.freq=as.data.frame(obese_age.freq)
+colnames(obese_age.freq)=c("obese_age","number")
+obese_age.freq$proportion=obese_age.freq$number/sum(obese_age.freq$number)
+
+p1=ggplot(data = obese_age.freq, aes(x = obese_age, y = proportion, fill=obese_age)) + geom_col()+
+  labs(x="Age Group",y="Proportion of Obesity",title="Proportion of Obesity by Age Group")
 #gender
 obese_sex.freq=table(data$Sex)
 obese_sex.freq=as.data.frame(obese_sex.freq)
 colnames(obese_sex.freq)=c("Sex","number")
 obese_sex.freq$proportion=obese_sex.freq$number/sum(obese_sex.freq$number)
 
-ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
+p2=ggplot(data = obese_sex.freq, aes(x = Sex, y = proportion, fill=Sex)) + geom_col()+
   labs(x="Sex",y="Proportion of Obesity",title="Proportion of Obesity by Sex")
+grid.arrange(p1,p2,ncol=2)
 ```
 
 @fig-scat2 displays the proportion of obesity by sex. Females occupied a higher proportion of obesity which was nearly 55% . Whereas males occupied a lower proportion of obesity which was nearly 45%.
