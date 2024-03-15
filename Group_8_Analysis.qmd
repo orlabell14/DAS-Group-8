@@ -393,7 +393,7 @@ plot_model(modelecon, type = "pred", terms = "Employment", axis.title = c("Socio
 
 From the plot we can see there appears to be a significant difference in the probability of being obese between different socio-economic groups.
 
-# Conclusions
+# Conclusions {#sec-C}
 
 While our exploratory analysis in @sec-EA and formal analysis in @sec-FA provides insight into the effect of age and socio-economic status on obesity, several limitations are observed. The sample size may be considered unbalanced as the population sizes of each level in the categorical variable are not similar.
 
